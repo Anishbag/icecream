@@ -1,0 +1,523 @@
+{% extends "base.html" %}
+
+{% block title %} contact {% endblock title %}
+
+{% block body %}
+
+<div class="container-fluid px-0 mb-3">
+
+    <img src="/static/img/c1.jpg" class="d-block w-100 mx-0 " style="height:500px; ">
+
+    <div>
+
+        <div class="container my-3 py-4">
+
+            <h1 class="text-center">Contact Us</h1>
+
+            <form method="post" action="/contact">
+
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name"
+                        placeholder="Enter your Name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email"
+                        placeholder="Enter your Email">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone number</label>
+                    <input type="phone" class="form-control" id="phone" name="phone"
+                        placeholder="Enter your Phone number">
+                </div>
+
+                
+                <div class="form-group">
+                    <label for="desc">Tell me about what you want to contact me for... </label>
+                    <textarea class="form-control" id="desc" rows="3" name="desc"></textarea>
+                </div>
+
+                <div class="text-center">
+
+                 <button class="btn btn-primary" type="submit">Submit</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anish Ice Cream - Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Chatbot Toggle Button */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .chatbot-toggle svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        /* Chatbot Container */
+        .chatbot-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 380px;
+            max-width: calc(100vw - 40px);
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px) scale(0.8);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .chatbot-container.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Chatbot Header */
+        .chatbot-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .chatbot-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .chatbot-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Chat Body */
+        .chatbot-body {
+            padding: 20px;
+            height: calc(100% - 80px);
+            overflow-y: auto;
+        }
+
+        .service-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card.phone {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .service-card.complaint {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .service-card.order {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+        }
+
+        .service-card.franchise {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+        }
+
+        .service-card.cakes {
+            background: linear-gradient(135deg, #fdbb2d 0%, #22c1c3 100%);
+        }
+
+        .service-card.party {
+            background: linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%);
+        }
+
+        .service-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .service-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .service-desc {
+            font-size: 11px;
+            color: #666;
+            margin: 5px 0 0 0;
+            line-height: 1.3;
+        }
+
+        /* Chat Messages */
+        .chat-messages {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.bot {
+            background: #f1f3f4;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quick-action {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .chatbot-container {
+                width: calc(100vw - 20px);
+                right: 10px;
+                bottom: 80px;
+                height: 450px;
+            }
+            
+            .service-options {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        /* Pulse Animation for Toggle Button */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+            }
+        }
+
+        .chatbot-toggle.pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chatbot Toggle Button -->
+    <button class="chatbot-toggle pulse" id="chatbotToggle">
+        <svg viewBox="0 0 24 24">
+            <path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M6,9V7H18V9H6M14,11V13H6V11H14M16,15V17H6V15H16Z" />
+        </svg>
+    </button>
+
+    <!-- Chatbot Container -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <!-- Header -->
+        <div class="chatbot-header">
+            <button class="close-btn" id="closeChatbot">&times;</button>
+            <h3>🍦 Anish Ice Cream</h3>
+            <p>How can we help you today?</p>
+        </div>
+
+        <!-- Body -->
+        <div class="chatbot-body">
+            <!-- Service Options Grid -->
+            <div class="service-options">
+                <button class="service-card phone" onclick="selectService('phone')">
+                    <span class="service-icon">📞</span>
+                    <h4 class="service-title">Get Phone Number</h4>
+                    <p class="service-desc">Contact us for immediate assistance</p>
+                </button>
+
+                <button class="service-card complaint" onclick="selectService('complaint')">
+                    <span class="service-icon">📝</span>
+                    <h4 class="service-title">File Complaint</h4>
+                    <p class="service-desc">Register your feedback & issues</p>
+                </button>
+
+                <button class="service-card order" onclick="selectService('order')">
+                    <span class="service-icon">🛒</span>
+                    <h4 class="service-title">Place Order</h4>
+                    <p class="service-desc">Quick ordering for sweet needs</p>
+                </button>
+
+                <button class="service-card franchise" onclick="selectService('franchise')">
+                    <span class="service-icon">🏪</span>
+                    <h4 class="service-title">Get Franchise</h4>
+                    <p class="service-desc">Learn about opportunities</p>
+                </button>
+
+                <button class="service-card cakes" onclick="selectService('cakes')">
+                    <span class="service-icon">🎂</span>
+                    <h4 class="service-title">Custom Cakes</h4>
+                    <p class="service-desc">Perfect for celebrations</p>
+                </button>
+
+                <button class="service-card party" onclick="selectService('party')">
+                    <span class="service-icon">🎉</span>
+                    <h4 class="service-title">Party Packages</h4>
+                    <p class="service-desc">Complete event solutions</p>
+                </button>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    Welcome to Anish Ice Cream! 🍦 Select any option above to get started.
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="quick-action" onclick="quickAction('hours')">Store Hours</button>
+                <button class="quick-action" onclick="quickAction('location')">Find Location</button>
+                <button class="quick-action" onclick="quickAction('menu')">View Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        const chatbotContainer = document.getElementById('chatbotContainer');
+        const closeChatbot = document.getElementById('closeChatbot');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Toggle chatbot
+        chatbotToggle.addEventListener('click', function() {
+            if (chatbotContainer.classList.contains('active')) {
+                closeChatbotFunc();
+            } else {
+                openChatbotFunc();
+            }
+        });
+
+        // Close chatbot
+        closeChatbot.addEventListener('click', closeChatbotFunc);
+
+        function openChatbotFunc() {
+            chatbotContainer.classList.add('active');
+            chatbotToggle.classList.remove('pulse');
+        }
+
+        function closeChatbotFunc() {
+            chatbotContainer.classList.remove('active');
+            setTimeout(() => {
+                chatbotToggle.classList.add('pulse');
+            }, 3000);
+        }
+
+        // Service selection functions
+        function selectService(service) {
+            const services = {
+                'phone': {
+                    title: '📞 Contact Information',
+                    message: 'Here are our contact details:\n\n📱 Phone: +91-6294373448\n📧 Email: anishbag18@gmail.com\n🕒 Available: 9 AM - 9 PM\n\nFeel free to call us anytime!'
+                },
+                'complaint': {
+                    title: '📝 File Complaint',
+                    message: 'We take your feedback seriously! Please share your concern:\n\n• What happened?\n• When did it occur?\n• Your contact details\n\nWe\'ll respond within 24 hours.'
+                },
+                'order': {
+                    title: '🛒 Place Your Order',
+                    message: 'Ready to satisfy your sweet cravings? 🍦\n\n📱 Call: +91-6294373448\n🌐 Online: www.anishicecream.com\n📍 Visit our nearest store\n\nFree delivery on orders above ₹299!'
+                },
+                'franchise': {
+                    title: '🏪 Franchise Opportunity',
+                    message: 'Interested in joining our sweet family? 🤝\n\n💰 Investment: ₹5-7 Lakhs\n📍 Prime locations available\n📞 Call: +91-6294373448\n📧 franchise@anishicecream.com\n\nLet\'s grow together!'
+                },
+                'cakes': {
+                    title: '🎂 Custom Cakes',
+                    message: 'Make your celebrations special! 🎉\n\n🎂 Custom designs\n🍓 Fresh ingredients\n📅 Pre-order 24 hours\n📞 Call: +91-6294373448\n\nPerfect for birthdays, weddings & more!'
+                },
+                'party': {
+                    title: '🎉 Party Packages',
+                    message: 'Make your events unforgettable! 🎊\n\n🍦 Ice cream stations\n🎂 Custom cakes\n🎈 Decorations\n👨‍🍳 Professional setup\n\n📞 Call: +91-6294373448 for quotes!'
+                }
+            };
+
+            const selectedService = services[service];
+            addMessage('user', `I need help with ${selectedService.title.replace(/[📞📝🛒🏪🎂🎉]/g, '').trim()}`);
+            
+            setTimeout(() => {
+                addMessage('bot', selectedService.message);
+            }, 500);
+        }
+
+        // Quick actions
+        function quickAction(action) {
+            const actions = {
+                'hours': 'Our store hours:\n🕘 Mon-Sun: 10:00 AM - 10:00 PM\n📞 Call for holiday hours',
+                'location': '📍 Find us at:\nMultiple locations across the city\n📱 Call +91-6294373448 for nearest store',
+                'menu': '🍦 Our delicious menu:\n• Premium Ice Creams\n• Custom Cakes\n• Sundaes & Shakes\n• Party Packages\n\nVisit store for full menu!'
+            };
+
+            addMessage('user', action.charAt(0).toUpperCase() + action.slice(1));
+            setTimeout(() => {
+                addMessage('bot', actions[action]);
+            }, 500);
+        }
+
+        // Add message to chat
+        function addMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = text.replace(/\n/g, '<br>');
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Close chatbot when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!chatbotContainer.contains(event.target) && !chatbotToggle.contains(event.target)) {
+                if (chatbotContainer.classList.contains('active')) {
+                    closeChatbotFunc();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+        
+
+        {% endblock body %}
+
+
+        
